@@ -1,0 +1,8 @@
+username: <username>
+token: <token>
+projects:
+  - project_name_1:
+    url: https://github.com/xxx/yyy
+    path: <localpath>
+    branch: stage
+    script: <run bash script after handle and pull changes>
