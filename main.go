@@ -14,21 +14,6 @@ import (
 	"time"
 )
 
-type Config struct {
-	Username string    `json:"username"`
-	Token    string    `json:"token"`
-	Projects []Project `json:"projects"`
-}
-
-type Project struct {
-	Url    string `json:"url"`
-	Path   string `json:"path"`
-	Branch string `json:"branch"`
-	Script string `json:"script"`
-}
-
-var config Config
-
 var auth *http.BasicAuth
 
 func main() {
@@ -56,7 +41,7 @@ func main() {
 		}
 
 		wg.Wait()
-		time.Sleep(5 * time.Second)
+		time.Sleep(time.Duration(config.Settings.CheckTime) * time.Second)
 	}
 }
 
