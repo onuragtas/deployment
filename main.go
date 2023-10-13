@@ -137,6 +137,7 @@ func deploy(project Project) {
 		checkout(project)
 
 		cmd := command.Command{}
+		cmd.RunCommand(project.Path, "chmod", "+x", project.Script)
 		cmd.RunCommand(project.Path, "bash", "-c", project.Script)
 		log.Println(project, "remote updated")
 	} else {
