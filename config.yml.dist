@@ -1,5 +1,7 @@
 username: <username>
 token: <token>
+settings:
+  check_time: 5 # seconds
 projects:
   - project_name_1:
     url: https://github.com/xxx/yyy
