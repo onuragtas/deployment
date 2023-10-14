@@ -146,6 +146,8 @@ func deploy(project Project) {
 
 func checkout(project Project) {
 	cmd := command.Command{}
+	cmd.RunCommand(project.Path, "git", "reset", "--hard", "HEAD")
+	cmd.RunCommand(project.Path, "git", "clean", "-fd")
 	cmd.RunCommand(project.Path, "git", "checkout", "master")
 	cmd.RunCommand(project.Path, "git", "branch", "-D", project.Branch)
 	cmd.RunCommand(project.Path, "git", "checkout", project.Branch)
