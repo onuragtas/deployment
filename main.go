@@ -143,6 +143,7 @@ func deploy(project Project) {
 		out, _ := cmd.Run(project.Check)
 
 		if strings.Contains(string(out), "start_deployment") {
+			checkout(project)
 			run(project)
 		}
 	}
