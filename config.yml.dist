@@ -7,4 +7,5 @@ projects:
     url: https://github.com/xxx/yyy
     path: <localpath>
     branch: stage
+    check: <check.sh> # run script if check print "start_deployment"
     script: <run bash script after handle and pull changes>
