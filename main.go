@@ -139,7 +139,7 @@ func deploy(project Project) {
 		run(project)
 
 		log.Println(project, "remote updated")
-	} else {
+	} else if project.Check != "" {
 		out, _ := cmd.Run(project.Check)
 
 		if strings.Contains(string(out), "start_deployment") {
