@@ -15,6 +15,10 @@ type Command struct {
 	stdInDuration int
 }
 
+func (c *Command) Run(cmd string) ([]byte, error) {
+	return exec.Command("bash", cmd).Output()
+}
+
 func (t *Command) RunCommand(path string, name string, arg ...string) {
 	prout, pwout := io.Pipe()
 	prerr, pwerr := io.Pipe()

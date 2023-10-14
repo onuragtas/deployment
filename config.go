@@ -12,6 +12,7 @@ type Project struct {
 	Url    string `yaml:"url"`
 	Path   string `yaml:"path"`
 	Branch string `yaml:"branch"`
+	Check  string `yaml:"check"`
 	Script string `yaml:"script"`
 }
 

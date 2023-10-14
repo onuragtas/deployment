@@ -10,10 +10,12 @@ import (
 	"io"
 	"log"
 	"os"
+	"strings"
 	"sync"
 	"time"
 )
 
+var cmd = command.Command{}
 var auth *http.BasicAuth
 
 func main() {
@@ -134,12 +136,21 @@ func deploy(project Project) {
 
 	if remoteUpdated {
 		checkout(project)
+		run(project)
 
-		cmd := command.Command{}
-		cmd.RunCommand(project.Path, "chmod", "+x", project.Script)
-		cmd.RunCommand(project.Path, "bash", "-c", project.Script)
 		log.Println(project, "remote updated")
+	} else {
+		out, _ := cmd.Run(project.Check)
+
+		if strings.Contains(string(out), "start_deployment") {
+			run(project)
+		}
 	}
+}
+
+func run(project Project) {
+	cmd.RunCommand(project.Path, "chmod", "+x", project.Script)
+	cmd.RunCommand(project.Path, "bash", "-c", project.Script)
 }
 
 func checkout(project Project) {
