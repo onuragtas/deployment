@@ -10,7 +10,6 @@ import (
 	"io"
 	"log"
 	"os"
-	"path"
 	"sync"
 	"time"
 )
@@ -19,10 +18,8 @@ var auth *http.BasicAuth
 
 func main() {
 	var wg sync.WaitGroup
-	e, _ := os.Executable()
-	pathApp := path.Dir(e)
 	for true {
-		byteArray, err := os.ReadFile(pathApp + "/config.yml")
+		byteArray, err := os.ReadFile(Opts.Config)
 		err = yaml.Unmarshal(byteArray, &config)
 
 		auth = &http.BasicAuth{
