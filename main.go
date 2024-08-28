@@ -35,10 +35,8 @@ func main() {
 		//wg.Add(len(config.Projects))
 		for _, project := range config.Projects {
 			go func(project Project) {
-				log.Println("deploying... ", project.Url, project.Path)
 				//defer wg.Done()
 				deploy(project)
-				log.Println("deployed ", project.Url, project.Path)
 			}(project)
 		}
 
@@ -138,16 +136,19 @@ func deploy(project Project) {
 	}
 
 	if remoteUpdated {
+		log.Println("deploying... ", project.Url, project.Path)
 		checkout(project)
 		run(project)
 
-		log.Println(project, "remote updated")
+		log.Println("deployed ", project.Url, project.Path)
 	} else if project.Check != "" {
 		out, _ := cmd.Run(project.Check)
 
 		if strings.Contains(string(out), "start_deployment") {
+			log.Println("deploying... ", project.Url, project.Path)
 			checkout(project)
 			run(project)
+			log.Println("deployed ", project.Url, project.Path)
 		}
 	}
 }
