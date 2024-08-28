@@ -35,10 +35,10 @@ func main() {
 		//wg.Add(len(config.Projects))
 		for _, project := range config.Projects {
 			go func(project Project) {
-				log.Println("deploying... ", project)
+				log.Println("deploying... ", project.Url, project.Path)
 				//defer wg.Done()
 				deploy(project)
-				log.Println("deployed ", project)
+				log.Println("deployed ", project.Url, project.Path)
 			}(project)
 		}
 
