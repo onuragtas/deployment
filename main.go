@@ -61,6 +61,8 @@ func deploy(project Project) {
 		return
 	}
 
+	cmd.RunCommand(project.Path, "git", "remote", "set-url", "origin", "https://"+config.Username+":"+config.Token+"@"+strings.ReplaceAll(project.Url, "https://", ""))
+
 	spec := "refs/heads/" + project.Branch + ":refs/remotes/origin/" + project.Branch
 
 	err = repo.Fetch(&git.FetchOptions{
