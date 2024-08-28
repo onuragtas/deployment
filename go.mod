@@ -1,6 +1,8 @@
 module deployment
 
-go 1.20
+go 1.22
+
+toolchain go1.22.6
 
 require (
 	github.com/go-git/go-git/v5 v5.9.0
