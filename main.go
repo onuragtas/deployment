@@ -11,8 +11,8 @@ import (
 	"log"
 	"os"
 	"strings"
+	"sync"
 	"time"
- "sync"
 )
 
 var cmd = command.Command{}
