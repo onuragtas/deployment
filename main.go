@@ -12,6 +12,7 @@ import (
 	"os"
 	"strings"
 	"time"
+ "sync"
 )
 
 var cmd = command.Command{}
