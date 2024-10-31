@@ -32,15 +32,15 @@ func main() {
 			return
 		}
 
-		//wg.Add(len(config.Projects))
+		wg.Add(len(config.Projects))
 		for _, project := range config.Projects {
 			go func(project Project) {
-				//defer wg.Done()
+				defer wg.Done()
 				deploy(project)
 			}(project)
 		}
 
-		//wg.Wait()
+		wg.Wait()
 		time.Sleep(time.Duration(config.Settings.CheckTime) * time.Second)
 	}
 }
