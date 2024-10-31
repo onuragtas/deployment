@@ -11,6 +11,7 @@ import (
 	"log"
 	"os"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -18,7 +19,7 @@ var cmd = command.Command{}
 var auth *http.BasicAuth
 
 func main() {
-	//var wg sync.WaitGroup
+	var wg sync.WaitGroup
 	for true {
 		byteArray, err := os.ReadFile(Opts.Config)
 		err = yaml.Unmarshal(byteArray, &config)
@@ -32,15 +33,15 @@ func main() {
 			return
 		}
 
-		//wg.Add(len(config.Projects))
+		wg.Add(len(config.Projects))
 		for _, project := range config.Projects {
 			go func(project Project) {
-				//defer wg.Done()
+				defer wg.Done()
 				deploy(project)
 			}(project)
 		}
 
-		//wg.Wait()
+		wg.Wait()
 		time.Sleep(time.Duration(config.Settings.CheckTime) * time.Second)
 	}
 }
