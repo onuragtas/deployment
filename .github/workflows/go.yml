@@ -14,18 +14,23 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+
     - name: Set up Go
       uses: actions/setup-go@v4
       with:
-        go-version: 1.22
+        go-version: 1.21
 
-    - name: Run goreleaser/goreleaser-action
+    - name: Build
+      run: go build -v ./...
+
+    - name: Test
+      run: go test -v ./...
+
+    - name: Run goreleaser/goreleaser-action@v5
       uses: goreleaser/goreleaser-action@v5
       with:
-        # either 'goreleaser' (default) or 'goreleaser-pro'
         distribution: goreleaser
         version: latest
         args: release --clean
-        go-version: 1.22
       env:
         GITHUB_TOKEN: ${{ secrets.GO_RELEASER_GITHUB_TOKEN }}
