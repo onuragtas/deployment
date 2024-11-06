@@ -35,10 +35,10 @@ func main() {
 
 		wg.Add(len(config.Projects))
 		for _, project := range config.Projects {
-			go func(project Project) {
-				defer wg.Done()
+			go func(project Project, w *sync.WaitGroup) {
+				defer w.Done()
 				deploy(project)
-			}(project)
+			}(project, &wg)
 		}
 
 		wg.Wait()
