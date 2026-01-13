@@ -1,5 +1,5 @@
-username: <username>
-token: <token>
+username: <username> # global username, will be used if project doesn't have its own
+token: <token> # global token, will be used if project doesn't have its own
 settings:
   check_time: 5 # seconds
 projects:
@@ -9,3 +9,5 @@ projects:
     branch: stage
     check: <check.sh> # run script if check print "start_deployment"
     script: <run bash script after handle and pull changes>
+    # username: <project_username> # optional: project-specific username (overrides global)
+    # token: <project_token> # optional: project-specific token (overrides global)

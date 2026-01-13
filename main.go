@@ -2,32 +2,45 @@ package main
 
 import (
 	"deployment/command"
-	"github.com/go-git/go-git/v5"
-	config2 "github.com/go-git/go-git/v5/config"
-	"github.com/go-git/go-git/v5/plumbing"
-	"github.com/go-git/go-git/v5/plumbing/transport/http"
-	"gopkg.in/yaml.v3"
 	"io"
 	"log"
 	"os"
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/go-git/go-git/v5"
+	config2 "github.com/go-git/go-git/v5/config"
+	"github.com/go-git/go-git/v5/plumbing"
+	"github.com/go-git/go-git/v5/plumbing/transport/http"
+	"gopkg.in/yaml.v3"
 )
 
 var cmd = command.Command{}
-var auth *http.BasicAuth
+
+func getAuth(project Project) *http.BasicAuth {
+	username := project.Username
+	token := project.Token
+
+	// Eğer project-specific username/token yoksa, global config'dekini kullan
+	if username == "" {
+		username = config.Username
+	}
+	if token == "" {
+		token = config.Token
+	}
+
+	return &http.BasicAuth{
+		Username: username,
+		Password: token,
+	}
+}
 
 func main() {
 	var wg sync.WaitGroup
 	for true {
 		byteArray, err := os.ReadFile(Opts.Config)
 		err = yaml.Unmarshal(byteArray, &config)
-
-		auth = &http.BasicAuth{
-			Username: config.Username,
-			Password: config.Token,
-		}
 
 		if err != nil {
 			return
@@ -47,6 +60,7 @@ func main() {
 }
 
 func deploy(project Project) {
+	auth := getAuth(project)
 
 	_, err := git.PlainClone(project.Path, false, &git.CloneOptions{
 		ReferenceName: plumbing.NewBranchReferenceName(project.Branch),
@@ -60,7 +74,16 @@ func deploy(project Project) {
 		return
 	}
 
-	cmd.RunCommand(project.Path, "git", "remote", "set-url", "origin", "https://"+config.Username+":"+config.Token+"@"+strings.ReplaceAll(project.Url, "https://", ""))
+	// Project için doğru username/token kullan
+	username := project.Username
+	token := project.Token
+	if username == "" {
+		username = config.Username
+	}
+	if token == "" {
+		token = config.Token
+	}
+	cmd.RunCommand(project.Path, "git", "remote", "set-url", "origin", "https://"+username+":"+token+"@"+strings.ReplaceAll(project.Url, "https://", ""))
 
 	spec := "refs/heads/" + project.Branch + ":refs/remotes/origin/" + project.Branch
 
