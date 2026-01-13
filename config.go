@@ -9,11 +9,13 @@ type Config struct {
 	Projects []Project `yaml:"projects"`
 }
 type Project struct {
-	Url    string `yaml:"url"`
-	Path   string `yaml:"path"`
-	Branch string `yaml:"branch"`
-	Check  string `yaml:"check"`
-	Script string `yaml:"script"`
+	Url      string `yaml:"url"`
+	Path     string `yaml:"path"`
+	Branch   string `yaml:"branch"`
+	Check    string `yaml:"check"`
+	Script   string `yaml:"script"`
+	Username string `yaml:"username,omitempty"`
+	Token    string `yaml:"token,omitempty"`
 }
 
 type Settings struct {
